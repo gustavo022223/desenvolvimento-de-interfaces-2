@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rick and Morty</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0px;
+            min-height: 100vh;
+            background-image: url("images/rick-and-morty.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.87);
+            margin-bottom: 10px;
+            border-radius: 15px;
+        }
+        #formulario {
+            height: 120px;
+            width: 400px;
+        }
+
+        #personagem {
+            height: 500px;
+            width: 400px;
+            display: none;
+        }
+
+        #mensagem {
+            height: 100px;
+            width: 400px;
+            display: none;
+        }
+
+        img {
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <section id="formulario">
+        <p>Insira a ID do personagem:</p>
+        <form name="formPersonagem" action="">
+            <label for="iId">
+                <input type="number" name="id" id="iId">
+            </label>
+            <button type="button" onclick="buscar()">Buscar</button>
+        </form>
+    </section>
+
+    <section id="mensagem"></section>
+
+    <section id="personagem">
+        <div id="nome"></div>
+        <div id="foto"></div>
+        <div id="especie"></div>
+    </section>
+
+    <script>
+        
+        function buscar() {
+            document.getElementById("mensagem").style.display = `none`;
+            document.getElementById("personagem").style.display = `none`;
+
+            const form = document.formPersonagem;
+            const id = form.id.value;
+
+            if(!id || isNaN(id) || id <= 0) {
+                document.getElementById("mensagem").innerHTML = `<p>O ID inserido é inválido.</p>`;
+                document.getElementById("mensagem").style.display = `flex`;
+            } else {
+                const xmlhttp = new XMLHttpRequest();
+
+                xmlhttp.onload = function () {
+                    const myObj = JSON.parse(this.responseText);
+
+                    if(!myObj.name) {
+                        document.getElementById("mensagem").innerHTML = `<p>Personagem não encontrado.</p>`;
+                        document.getElementById("mensagem").style.display = `flex`;
+                    } else {
+                        document.getElementById("nome").innerHTML = `<h2>${myObj.name}</h2>`;
+                        document.getElementById("foto").innerHTML = `<img src="${myObj.image}" alt="">`;
+                        document.getElementById("especie").innerHTML = `<p>Espécie: ${myObj.species}</p>`;
+                        document.getElementById("personagem").style.display = `flex`;
+                    }
+                }
+
+                xmlhttp.open("GET", `https://rickandmortyapi.com/api/character/${id}`);
+                xmlhttp.send();
+            }
+        }
+    </script>
+</body>
+</html>
