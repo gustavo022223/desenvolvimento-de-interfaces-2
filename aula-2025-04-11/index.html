@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        table, th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #tabela {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            margin-bottom: 2px;
+        }
+
+        #tabela > p {
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Venha fazer parte da família IFBook!</h2>
+    <p>Candidate-se agora e garanta a sua vaga:</p>
+    <form action="" name="cadastro" method="post">
+        <label for="inome">Nome:
+            <input type="text" name="nome" id="inome">
+        </label>
+
+        <br><br>
+        <label for="iemail">E-mail:
+                <input type="email" name="email" id="iemail">
+        </label>
+
+        <br>
+        <br>
+        Você já comeu pizza de abacaxi?
+        <input type="radio" id="ipizzaSim" name="pizza" value="Sim">
+        <label for="ipizzaSim">Sim</label>
+        <input type="radio" id="ipizzaNao" name="pizza" value="Não">
+        <label for="ipizzaNao">Não</label>
+        
+        <br>
+        <br>
+        <label for="ipretensao">Qual a sua pretensão salarial?
+            <select name="pretensao" id="ipretensao">
+                <option value="De R$ 1000 a R$ 1200">De R$ 1000 a R$ 1200</option>
+                <option value="De R$ 1200 a R$ 1500">De R$ 1200 a R$ 1500</option>
+                <option value="De R$ 1500 a R$ 2000">De R$ 1500 a R$ 2000</option>
+            </select>
+        </label>
+
+        <br>
+        <p>Você pretende desfrutar de quais benefícios da empresa?</p>
+        <input type="checkbox" id="ibeneficio1" name="beneficios" value="Banheiro">
+        <label for="ibeneficio1">Banheiro</label>
+        <input type="checkbox" id="ibeneficio2" name="beneficios" value="Microondas">
+        <label for="ibeneficio2">Microondas</label>
+        <input type="checkbox" id="ibeneficio3" name="beneficios" value="Cafeteira">
+        <label for="ibeneficio3">Cafeteira</label>
+        <input type="checkbox" id="ibeneficio4" name="beneficios" value="Elevador">
+        <label for="ibeneficio4">Elevador</label>
+
+        <br><br>
+        <button type="reset" onclick="limparTabela()">Limpar</button>
+        <button type="button" name="verifica" onclick="verificar();">Verificar</button>
+    </form>
+
+    <div id="tabela">
+        <p>Você preencheu todos os campos corretamente. Entraremos em contato em breve.</p>
+        <table>
+            <tr id="trNome">
+                <td>Nome:</td>
+            </tr>
+            <tr id="trEmail">
+                <td>E-mail:</td>
+            </tr>
+            <tr id="trPizza">
+                <td>Já comeu pizza de abacaxi:</td>
+            </tr>
+            <tr id="trPretensao">
+                <td>Pretensão salarial:</td>
+            </tr>
+            <tr id="trBeneficios">
+                <td>Beneficios:</td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function verificar() {
+            limparTabela();
+            const form = document.cadastro;
+            const nome = form.nome.value;
+            const email = form.email.value;
+            const pretensao = form.pretensao.value;
+            const beneficios = form["beneficios"];
+            const pizza = form["pizza"];
+
+            const beneficiosSelecionados = [];
+            let algumBeneficioFoiSelecionado = false;
+            for (let beneficio of beneficios) {
+                if (beneficio.checked==true) {
+                    beneficiosSelecionados.push(beneficio);
+                    algumBeneficioFoiSelecionado = true;
+                }
+            }
+
+            let respondeuPizza = false;
+            let respostaPizza = "";
+            for (let i = 0; i < pizza.length; i++) {
+                if (pizza[i].checked == true ) {
+                    respondeuPizza = true;
+                    respostaPizza = pizza[i].value;
+                }
+            }
+
+            if (nome.trim() === "" || email.trim() === "" || !respondeuPizza) {
+                alert("Preencha todos os campos!");
+            } else {
+                const tdNome = document.createElement("td");
+                tdNome.textContent = nome;
+                document.getElementById("trNome").appendChild(tdNome);
+
+                const tdEmail = document.createElement("td");
+                tdEmail.textContent = email;
+                document.getElementById("trEmail").appendChild(tdEmail);
+
+                const tdPizza = document.createElement("td");
+                tdPizza.textContent = respostaPizza;
+                document.getElementById("trPizza").appendChild(tdPizza);
+
+                const tdPretensao = document.createElement("td");
+                tdPretensao.textContent = pretensao;
+                document.getElementById("trPretensao").appendChild(tdPretensao);
+
+                const tdBeneficio = document.createElement("td");
+                if (!algumBeneficioFoiSelecionado) {
+                    tdBeneficio.textContent = "Nenhum benefício selecionado"
+                } else {
+                    for (let i = 0; i < beneficiosSelecionados.length; i++) {
+                        tdBeneficio.textContent += beneficiosSelecionados[i].value;
+                        if (i < beneficiosSelecionados.length - 1) {
+                            tdBeneficio.textContent += ", ";
+                        }
+                    }
+                }
+                document.getElementById("trBeneficios").appendChild(tdBeneficio);
+
+                document.getElementById("tabela").style.display = "flex";
+            }
+        }
+
+        function limparTabela() {
+            document.getElementById("tabela").style.display = "none";
+            document.getElementById("trNome").innerHTML = "<td>Nome:</td>";
+            document.getElementById("trEmail").innerHTML = "<td>E-mail:</td>";
+            document.getElementById("trPizza").innerHTML = "<td>Já comeu pizza de abacaxi:</td>";
+            document.getElementById("trPretensao").innerHTML = "<td>Pretensão salarial:</td>";
+            document.getElementById("trBeneficios").innerHTML = "<td>Beneficios:</td>";
+        }
+    </script>
+</body>
+</html>

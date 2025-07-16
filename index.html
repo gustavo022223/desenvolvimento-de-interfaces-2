@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desenvolvimento de Interfaces - 3A (2025/1)</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Calibri, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        header {
+            height: 150px;
+        }
+
+        #logo {
+            background: url("images/IF-sul-rio-grandense.jpg") no-repeat center;
+            background-size: contain;
+            height: 100%;
+        }
+
+        #bloco-curso {
+            background-color: #9ee160;
+            height: 100px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid black;
+            text-align: center;
+
+            box-shadow: 0px 5px 5px #00000046, inset 1px 5px 3px 0px #b4ff6e;
+        }
+
+        main {
+            flex: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: space-evenly;
+            padding: 0 20px 20px;
+            box-sizing: border-box;
+        }
+
+        #titulo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        #bloco-curso>h2 {
+            font-size: 25px;
+            font-weight: 500;
+        }
+
+        #titulo>h2 {
+            color: #898989;
+            font-size: 40px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #898989;
+            font-size: 50px;
+            margin: 0;
+        }
+
+        .conteudo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+        }
+
+        ul {
+            columns: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0;
+            width: 100%;
+        }
+
+        li::marker {
+            color: red;
+        }
+
+        a {
+            font-size: 1.5rem;
+            color: #000000;
+            text-decoration: none;
+            display: inline-block;
+            padding: 2px 0;
+        }
+
+        a:hover {
+            color: #898989;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1rem;
+            }
+
+            h3 {
+                font-size: 0.5rem;
+            }
+
+            p {
+                font-size: 1.5rem;
+            }
+
+            ul {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                width: auto;
+            }
+
+            li {
+                text-align: center;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            #titulo>h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 0.5rem;
+            }
+
+            p {
+                font-size: 1.3rem;
+            }
+
+            a {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div id="logo"></div>
+        </header>
+        <main>
+            <div id="titulo">
+                <div id="bloco-curso">
+                    <h2>Curso Análise e Desenvolvimento de Sistemas</h2>
+                </div>
+                <h1>Desenvolvimento Interfaces II</h1>
+                <h2>3A (2025/1)</h2>
+            </div>
+
+            <div class="conteudo">
+                <ul>
+                    <li><a href="aula-2025-02-28/estruturas-repeticao.html">28/02 - Estruturas de repetição</a></li>
+                    <li><a href="aula-2025-03-14/objetos.html">14/03 - Objetos</a></li>
+                    <li><a href="aula-2025-03-21/aposte-no-dado.html">21/03 - Aposte no dado</a></li>
+                    <li><a href="aula-2025-03-28/index.htm">28/03 - Protótipo de rede social</a></li>
+                    <li><a href="aula-2025-04-04/index.html">04/04 - Mapa de emoções</a></li>
+                    <li><a href="aula-2025-04-11/index.html">11/04 - Tratamento de formulário</a></li>
+                    <li><a href="aula-2025-04-25/index.html">25/04 - Ordens de serviço</a></li>
+                    <li><a href="aula-2025-05-09/index.html">09/05 - Tratamento de exceções</a></li>
+                    <li><a href="aula-2025-05-16/index.html">16/05 - Galeria de imagens com jQuery</a></li>
+                    <li><a href="aula-2025-05-23/jquery-2.html">23/05 - jQuery II</a></li>
+                    <li><a href="aula-2025-05-30/index.html">30/05 - Lista de produtos com JSON</a></li>
+                    <li><a href="aula-2025-06-06/index.html">06/06 - Requisição de dados JSON</a></li>
+                </ul>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

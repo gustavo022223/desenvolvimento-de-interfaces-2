@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de produtos</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            margin-left: 10px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .bloco {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 0px 10px;
+        }
+
+        .bloco label {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 10px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bloco input {
+            box-sizing: border-box;
+            margin-left: 5px;
+        }
+
+        .bloco select {
+            width: 50%;
+        }
+
+        #botoes {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        #botoes > button {
+            width: 80px;
+            height: 80px;
+            margin: 0px 5px 0px 0px;
+        }
+
+        table {
+            margin: 0px 10px;
+        }
+
+        table, th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .sucesso{
+            background-color: rgb(44, 151, 44);
+            color: white;
+        }
+
+        .erro{
+            background-color: rgb(184, 43, 43);
+            color: white;
+        }
+
+        .nenhum {
+            text-align: center
+        }
+
+        #tabela-mensagens {
+            overflow: auto;
+            height: 200px;
+            max-width: 400px;
+        }
+
+        #titulo-tabela {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        #limparTabela {
+            height: 40px;
+            padding: 0 15px;
+            font-size: 14px;
+            margin-right: 10px;
+            align-self: center;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; flex-direction: row;">
+        <div>
+            <h2>Cadastro de produtos</h2>
+            <form name="formProduto" action="">
+                <div class="bloco">
+                    <label for="iCodigo">Código do produto:
+                        <input type="number" name="codigo" id="iCodigo">
+                    </label>
+                    <label for="iNome">Nome do produto:
+                        <input type="text" name="nome" id="iNome">
+                    </label>
+                    <label for="iPrecoCusto">Preço de custo:
+                        <input type="number" step="0.01" name="precoCusto" id="iPrecoCusto">
+                    </label>
+                    <label for="iPrecoVenda">Preço de venda:
+                        <input type="number" step="0.01" name="precoVenda" id="iPrecoVenda">
+                    </label>
+                </div>
+                <div class="bloco">
+                    <label for="iQuantidadeEstoque">Quantidade em estoque:
+                        <input type="number" name="quantidadeEstoque" id="iQuantidadeEstoque">
+                    </label>
+                    <label for="iQuantidadeMinima">Quantidade mínima:
+                        <input type="number" name="quantidadeMinima" id="iQuantidadeMinima">
+                    </label>
+                    <label for="iCategoria">Categoria:
+                        <select name="categoria" id="iCategoria" required>
+                            <option value="" selected disabled>Escolha</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Vestuário">Vestuário</option>
+                            <option value="Alimentos">Alimentos</option>
+                            <option value="Móveis">Móveis</option>
+                            <option value="Esportes">Esportes</option>
+                            <option value="Brinquedos">Brinquedos</option>
+                        </select>
+                    </label>
+                    <label for="iMarca">Marca:
+                        <input type="text" name="marca" id="iMarca">
+                    </label>
+                </div>
+                <div class="bloco" id="botoes">
+                    <button type="button" id="salvar">Salvar produto</button>
+                    <button type="reset">Limpar</button>
+                </div>
+            </form>
+        </div>
+        <div>
+            <div id="tabela-mensagens">
+                <h2>Mensagens</h2>
+                <table>
+                    <tbody id="corpo-tabela-mensagens">
+                        <tr>
+                            <td id="nenhuma-mensagem">Nenhuma mensagem para exibir.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="titulo-tabela">
+        <h2>Produtos</h2>
+        <button type="button" id="limparTabela">Limpar tabela</button>
+    </div>
+    <table>
+        <thead>
+            <th>Cód.</th>
+            <th>Nome</th>
+            <th>Preço de custo</th>
+            <th>Preço de venda</th>
+            <th>Qtde em estoque</th>
+            <th>Qtde mínima</th>
+            <th>Categoria</th>
+            <th>Marca</th>
+            <th>Ações</th>
+        </thead>
+        <tbody id="corpo-tabela">
+            <tr>
+                <td colspan="9" class="nenhum">Nenhum produto para exibir no momento.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        const texto = localStorage.getItem("produtos");
+        let produtos;
+        if (texto) {
+            produtos = JSON.parse(texto);
+        } else {
+            produtos = [];
+        }
+
+        atualizaTabela();
+
+        $(document).ready(function () {
+
+            $('#salvar').click(function() {
+                let cod = $('#iCodigo').val();
+                let nome = $('#iNome').val();
+                let precoCusto = $('#iPrecoCusto').val();
+                let precoVenda = $('#iPrecoVenda').val();
+                let quantidadeEstoque = $('#iQuantidadeEstoque').val();
+                let quantidadeMinima = $('#iQuantidadeMinima').val();
+                let categoria = $('#iCategoria').val();
+                let marca = $('#iMarca').val();
+
+                try {
+                    if(!cod || !nome.trim() || !precoCusto || !precoVenda || !quantidadeEstoque || !quantidadeMinima || !categoria || !marca.trim()) throw "um ou mais campos não foram preenchidos.";
+                    if(cod < 0 || precoCusto < 0 || precoVenda < 0 || quantidadeEstoque < 0 || quantidadeMinima < 0 ) throw "valores negativos foram inseridos.";
+
+                    for (let produto of produtos) {
+                        if (produto.cod == cod) throw "o código inserido já está em uso.";
+                    }
+
+                    const produto = {cod: Number(cod), 
+                                    nome: nome, 
+                                    precoCusto: Number(precoCusto), 
+                                    precoVenda: Number(precoVenda), 
+                                    quantidadeEstoque: Number(quantidadeEstoque), 
+                                    quantidadeMinima: Number(quantidadeMinima), 
+                                    categoria: categoria, 
+                                    marca: marca};
+                    produtos.push(produto);
+                    const produtosJSON = JSON.stringify(produtos);
+                    localStorage.setItem("produtos", produtosJSON);
+                    document.formProduto.reset();
+                    
+                    exibeMensagem("Produto adicionado com sucesso.", "sucesso");
+                    atualizaTabela();
+                } catch(err) {
+                    exibeMensagem(`Erro: ${err}`, "erro");
+                } finally {
+                    console.log("Fim da função salvar");
+                }
+            });
+
+            $('#corpo-tabela').on('click', '.remover', function () {
+                const cod = Number($(this).val());
+                const produto = produtos.find(p => p.cod === cod);
+
+                if (confirm(`Deseja excluir o produto ${produto.nome}?`)) {
+                    try {
+                        produtos = produtos.filter(p => p.cod !== cod);
+                        const produtosJSON = JSON.stringify(produtos);
+                        localStorage.setItem("produtos", produtosJSON);
+                        exibeMensagem("Produto removido com sucesso.", "sucesso");
+                    } catch(err) {
+                        exibeMensagem(`Erro: ${err}`, "erro");
+                    } finally {
+                        atualizaTabela();
+                        console.log("Fim da função remover.")
+                    }
+                } else {
+                    exibeMensagem("Operação de exclusão cancelada.", "erro");
+                }
+            });
+
+            $('#limparTabela').click(function() {
+                if(confirm("Deseja excluir todos os dados da tabela?")) {
+                    localStorage.removeItem("produtos");
+                    produtos = [];
+                    atualizaTabela();
+                    exibeMensagem("Tabela zerada com sucesso.", "sucesso");
+                } else {
+                    exibeMensagem("Operação de exclusão cancelada.", "erro");
+                }
+            }); 
+        });
+
+        function horaAtual() {
+            const agora = new Date();
+            const dataHora = agora.toLocaleDateString("pt-BR") + " " + agora.toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+            return dataHora;
+        }
+
+        function atualizaTabela() {
+            $('#corpo-tabela').empty();
+
+            if (produtos.length != 0) {
+                $('.nenhum').remove();
+                for (const produto of produtos) {
+                    $('#corpo-tabela').append(`
+                    <tr class="child">
+                        <td>${produto.cod}</td>
+                        <td>${produto.nome}</td>
+                        <td>${produto.precoCusto}</td>
+                        <td>${produto.precoVenda}</td>
+                        <td>${produto.quantidadeEstoque}</td>
+                        <td>${produto.quantidadeMinima}</td>
+                        <td>${produto.categoria}</td>
+                        <td>${produto.marca}</td>
+                        <td><button class="remover" value="${produto.cod}">Remover</button></td>
+                    </tr>`);
+                }
+            } else {
+                $('#corpo-tabela').html('<td colspan="9" class="nenhum">Nenhum produto para exibir no momento.</td>');
+            }
+        }
+
+        function exibeMensagem(mensagem, tipo) {
+            $('#nenhuma-mensagem').remove();
+            $('#corpo-tabela-mensagens').prepend(`<tr class="child"><td class="${tipo}">[${horaAtual()}] ${mensagem}</td></tr>`);
+        }
+    </script>
+</body>
+</html>

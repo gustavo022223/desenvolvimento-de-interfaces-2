@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Substiuição</title>
+</head>
+<body>
+    <script type="text/javascript">
+
+        let textoOriginal = prompt("Insira uma frase");
+
+        while(true) {
+            const frases = {
+                original: textoOriginal,
+                modificada: ""
+            };
+
+            substituir(frases);
+        
+            alert(`Frase modificada: ${frases.modificada}`);
+
+            let continuar = confirm("Deseja fazer novas substituições?");
+
+            if (!continuar) {
+                break;
+            } else {
+                textoOriginal = frases.modificada;
+            }
+        }
+
+        function substituir(frases) {
+            const textoSubstituido = prompt("Insira o texto a ser substituído");
+            const textoSubstituto = prompt("Insira o texto que substituirá");
+
+            let modificada = "";
+            let local = 0;
+            while(true) {
+                let localPalavra = textoOriginal.indexOf(textoSubstituido, local);
+
+                if (localPalavra !== -1) {
+                    modificada += textoOriginal.substring(local, localPalavra) + textoSubstituto;
+                    local = localPalavra + textoSubstituido.length;
+                } else {
+                    break;
+                }
+            }
+            modificada += textoOriginal.substring(local);
+            frases.modificada = modificada;
+        }
+    </script>
+</body>
+</html>

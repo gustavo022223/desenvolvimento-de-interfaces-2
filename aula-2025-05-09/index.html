@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+</head>
+<body>
+    <h2>Calculadora</h2>
+    <form action="" name="formCalculadora">
+        <label for="iPrimeiroNumero">Primeiro número:
+            <input type="text" name="primeiroNumero" id="iPrimeiroNumero">
+        </label>
+        <br>
+        <label for="iOperacao">Operação:
+            <select name="operacao" id="iOperacao">
+                <option value="" selected disabled>Escolha</option>
+                <option value="adicao">Adição</option>
+                <option value="subtracao">Substração</option>
+                <option value="multiplicacao">Multiplicação</option>
+                <option value="divisao">Divisão</option>
+            </select>
+        </label>
+        <br>
+        <label for="iSegundoNumero">Segundo número:
+            <input type="text" name="segundoNumero" id="iSegundoNumero">
+        </label>
+        <br>
+        <button type="submit" name="calcula" onclick="calcular(event);">Calcular</button>
+        <button type="reset">Limpar</button>
+    </form>
+
+    <div>
+        <p id="resultado">Resultado: </p>
+    </div>
+
+    <div>
+        <p id="mensagem"></p>
+    </div>
+
+    <script>
+        function calcular(event) {
+            event.preventDefault();
+
+            const form = document.formCalculadora;
+            const primeiroInput = form.primeiroNumero.value;
+            const segundoInput = form.segundoNumero.value;
+            const operacao = form.operacao.value;
+            const mensagem = document.getElementById("mensagem");
+            const campoResultado = document.getElementById("resultado");
+
+            let resultado = 0;
+
+            try {
+                if(!primeiroInput.trim() || !operacao.trim() || !segundoInput.trim()) throw "um ou mais campos não foram preenchidos.";
+                if(isNaN(primeiroInput) || isNaN(segundoInput)) throw "um ou mais caracteres inseridos não são um número.";
+
+                let primeiroNumero = Number(primeiroInput);
+                let segundoNumero = Number(segundoInput);
+
+                if(operacao == "adicao") {
+                    resultado = primeiroNumero + segundoNumero;
+                } else if (operacao == "subtracao") {
+                    resultado = primeiroNumero - segundoNumero;
+                } else if (operacao == "multiplicacao") {
+                    resultado = primeiroNumero * segundoNumero;
+                } else if (operacao == "divisao") {
+                    if(segundoNumero === 0) throw "divisão por zero."
+                    resultado = primeiroNumero / segundoNumero;
+                }
+                campoResultado.innerHTML = "Resultado: " + resultado;
+                mensagem.innerHTML = "";
+
+            } catch(err) {
+                campoResultado.innerHTML = "";
+                mensagem.innerHTML = "Erro: " + err;
+            } finally {
+                console.log("Fim");
+            }
+        }
+    </script>
+</body>
+</html>

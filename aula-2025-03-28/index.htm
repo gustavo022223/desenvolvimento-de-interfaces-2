@@ -1,0 +1,80 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>..:: IFBook ::..</title>
+	<style>
+		table {
+			border: 1px solid;
+			border-collapse: collapse;
+		}
+
+		th {
+			background-color: gray;
+			border: 1px solid;
+			color: white;
+		}
+
+		td {
+			background-color: #D3D3D3;
+			border: 1px solid;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>IFBook</h1>
+	<h2>Minha lista de amigos</h2>
+	<table style="border:1px solid;">
+		<tr>
+			<th>Foto</th>
+			<th>Nome</th>
+			<th>Data adição</th>
+		</tr>
+		<tbody id="pessoas">
+			<!-- Corpo da tabela a ser preenchido com os dados das pessoas -->
+		</tbody>
+		<script type="text/javascript">
+			// insira aqui seu código...
+
+			// 
+			document.addEventListener("copy", ((event) => 
+				alert("Não cometa plágio: lembre-se de informar de onde este texto foi retirado.")));
+
+			const stringPessoas = "Tralalero Tralala, Bombardiro Crocodilo, Tung Tung Tung Sahur, Lirini Larila, Boneca Ambalabu, Brr Brr Patapim, Chimpanzini Bananini, Bombombini Gusini, Capuccino Assassino, Trippi Troppi, Frigo Camelo, La Vaca Saturno Saturnita, Ballerina Cappucina, Trulimero Trulicina, Bobrito Bandito, Brri Brri Bicus Dicus Bombicus";
+			const pessoas = stringPessoas.split(", ");
+
+			const tbody = document.getElementById("pessoas");
+
+			for (let i = 0; i < pessoas.length; i++) {
+				let nome = pessoas[i];
+				let conhece = confirm(`Você conhece ${nome}?`);
+
+				if (conhece) {
+					const tr = document.createElement("tr");
+
+					const tdFoto = document.createElement("td");
+					const img = document.createElement("img");
+					img.src = `imagens/${i+1}.png`;
+					tdFoto.appendChild(img);
+
+					const tdNome = document.createElement("td");
+					tdNome.textContent = nome;
+
+					const tdData = document.createElement("td");
+					const agora = new Date();
+					tdData.textContent = agora.toLocaleDateString() + ", " + agora.toLocaleTimeString();
+
+					tr.appendChild(tdFoto);
+					tr.appendChild(tdNome);
+					tr.appendChild(tdData);
+
+					tbody.appendChild(tr);
+				}
+			}
+
+		</script>
+	</table>
+</body>
+
+</html>

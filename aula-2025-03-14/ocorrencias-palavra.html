@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocorrências de palavra</title>
+</head>
+<body>
+    <script type="text/javascript">
+        const frase = prompt("Por favor, insira uma frase");
+        const palavra = prompt("Por favor, insira uma palavra");
+
+        const fraseMin = frase.toLowerCase();
+        const palavraMin = palavra.toLowerCase();
+
+        let contador = 0;
+        let local = 0;
+        while(true) {
+            let localPalavra = fraseMin.indexOf(palavraMin, local);
+
+            if (localPalavra != -1) {
+                contador += 1;
+                local = localPalavra + palavra.length;
+            } else {
+                break;
+            }
+        }
+
+        if (contador > 0) {
+            alert(`A palavra ocorreu ${contador} vez(es)`)
+        } else {
+            alert('A palavra não foi encontrada')
+        }
+    </script>
+</body>
+</html>

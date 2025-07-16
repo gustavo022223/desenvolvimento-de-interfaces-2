@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #bloco-img {
+            min-height: 400px;
+            min-width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div id="bloco-img">
+        <img id="img" src="https://i.ytimg.com/vi/X2lKfziRFSs/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBTAP_WS5SC3vWMdfDqeuJkZR4e5g" alt="">
+    </div>
+
+    <div>    
+        <button id="hide">Hide</button>
+        <button id="show">Show</button>
+        <button id="toggle">Toggle</button>
+        <button id="slideDown">Slide down</button>
+        <button id="slideUp">Slide up</button>
+        <button id="slideToggle">Slide Toggle</button>
+        <button id="fadeIn">Fade in</button>
+        <button id="fadeOut">Fade out</button>
+        <button id="fadeToggle">Fade toggle</button>
+        <button id="fadeTo">Fade to</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#hide").click(function () {
+                $("#img").hide();
+            });
+
+            $("#show").click(function () {
+                $("#img").show();
+            });
+
+            $("#toggle").click(function () {
+                $("#img").toggle();
+            });
+
+            $("#slideDown").click(function () {
+                $("#img").slideDown();
+            });
+
+            $("#slideUp").click(function () {
+                $("#img").slideUp();
+            });
+
+            $("#slideToggle").click(function () {
+                $("#img").slideToggle();
+            });
+
+            $("#fadeIn").click(function () {
+                $("#img").fadeIn();
+            });
+
+            $("#fadeOut").click(function () {
+                $("#img").fadeOut();
+            });
+
+            $("#fadeToggle").click(function () {
+                $("#img").fadeToggle();
+            });
+
+            let fadeOut = true;
+            $("#fadeTo").click(function () {
+                fadeOut = !fadeOut;
+                if(!fadeOut) {
+                    $("#img").fadeTo("slow", 0.5);
+                } else {
+                    $("#img").fadeTo("slow", 1.0);
+                }
+            });
+
+
+
+        
+        });
+    </script>
+</body>
+</html>

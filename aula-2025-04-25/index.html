@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordens de Serviço</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        table {
+            margin: 0px 10px;
+        }
+
+        table, th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        #nenhuma {
+            text-align: center
+        }
+
+        #proxima {
+            background-color: lightgreen;
+        }
+
+        form {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .bloco {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 0px 10px;
+        }
+
+        .bloco label {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 10px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bloco input {
+            box-sizing: border-box;
+            margin-left: 5px;
+        }
+
+        .bloco select {
+            width: 52%;
+        }
+
+        #botoes {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        #botoes > button {
+            width: 80px;
+            height: 80px;
+            margin: 0px 5px 0px 0px;
+        }
+
+        h2 {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Formulário para preenchimento da OS</h2>
+    <form action="" name="formularioOS">
+        <div class="bloco">
+            <label for="iNomeCliente">Nome:
+                <input type="text" name="nomeCliente" id="iNomeCliente">
+            </label>
+            <label for="iTelefoneCliente">Telefone:
+                <input type="tel" name="telefoneCliente" id="iTelefoneCliente">
+            </label>
+            <label for="iEmailCliente">Email:
+                <input type="email" name="emailCliente" id="iEmailCliente">
+            </label>
+        </div>
+        <div class="bloco">
+            <label for="iTipoDispositivo">Tipo do Dispositivo:
+                <select name="tipoDispositivo" id="iTipoDispositivo" required>
+                    <option value ="" selected disabled>Escolha</option>
+                    <option value="Computador">Computador</option>
+                    <option value="Celular">Celular</option>
+                    <option value="Tablet">Tablet</option>
+                </select>
+            </label>
+            <label for="iMarcaDispositivo">Marca do Dispositivo:
+                <input type="text" name="marcaDispositivo" id="iMarcaDispositivo">
+            </label>
+            <label for="iModeloDispositivo">Modelo do Dispositivo:
+                <input type="text" name="modeloDispositivo" id="iModeloDispositivo">
+            </label>
+        </div>
+        <div class="bloco" id="botoes">
+            <button type="submit" name="verifica" onclick="verificar(event);">Enviar</button>
+            <button type="reset">Limpar</button>
+        </div>
+    </form>
+
+    <h2>Ordens de serviço</h2>
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>E-mail</th>
+            <th>Tipo do dispositivo</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Hora de entrada</th>
+            <th>Ações</th>
+        </thead>
+        <tbody id="corpo-tabela">
+            <td colspan="9" id="nenhuma">Nenhuma ordem de serviço no momento.</td>
+        </tbody>
+    </table>
+
+
+    <script>
+        const ordensServico = new Map();
+        let contadorClientes = 0;
+
+        function verificar(event) {
+            event.preventDefault();
+
+            const form = document.formularioOS;
+            const nomeCliente = form.nomeCliente.value;
+            const telefoneCliente = form.telefoneCliente.value;
+            const emailCliente = form.emailCliente.value;
+
+            const tipoDispositivo = form.tipoDispositivo.value;
+            const marcaDispositivo = form.marcaDispositivo.value;
+            const modeloDispositivo = form.modeloDispositivo.value;
+            
+            const agora = new Date();
+            const dataHora = agora.toLocaleDateString("pt-BR") + " - " + agora.toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+            if(!nomeCliente || !emailCliente || !telefoneCliente || !tipoDispositivo || !marcaDispositivo || !modeloDispositivo){
+                alert("Preencha todos os campos do formulário!")
+            }else{
+                contadorClientes++;
+
+                const os = {
+                    "id": contadorClientes,
+                    "nomeCliente": nomeCliente,
+                    "telefoneCliente": telefoneCliente,
+                    "emailCliente": emailCliente,
+                    "tipoDispositivo": tipoDispositivo,
+                    "marcaDispositivo": marcaDispositivo,
+                    "modeloDispositivo": modeloDispositivo,
+                    "horaEntrada": dataHora
+                }
+
+                ordensServico.set(contadorClientes, os);
+                form.reset();
+
+                gerenciarTabela();
+            }
+        }
+
+        function gerenciarTabela() {
+            const tabela = document.getElementById("corpo-tabela");
+            tabela.innerHTML = "";
+
+            let proxima = true;
+
+            for (let [id, os] of ordensServico) {
+                const linha = document.createElement("tr");
+
+                if (proxima) {
+                    linha.id = 'proxima';
+                    proxima = false;
+                }
+
+                for (let valor of Object.values(os)) {
+                    const td = document.createElement("td");
+                    td.textContent = valor;
+                    linha.appendChild(td);
+                }
+
+                const botaoConcluir = document.createElement("td");
+                botaoConcluir.innerHTML = `<button type="button" onclick="concluir(${id});">Concluir</button>`;
+                linha.appendChild(botaoConcluir);
+                tabela.appendChild(linha);
+            }
+        }
+
+        function concluir(id) {
+            if (ordensServico.has(id)) {
+                ordensServico.delete(id);
+                gerenciarTabela();
+            }
+        }
+    </script>
+</body>
+</html>

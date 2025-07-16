@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .foto-contato {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+                table {
+            margin: 0px 10px;
+        }
+
+        table, th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h2>Adicionar contato</h2>
+    <form name="formContato" action="">
+
+        <label for="iFoto">URL da foto:
+            <input type="text" name="foto" id="iFoto">
+        </label>
+
+        <label for="iNome">Nome:
+            <input type="text" name="nome" id="iNome">
+        </label>
+
+        <label for="iNumero">Número de telefone:
+            <input type="tel" name="numero" id="iNumero">
+        </label>
+
+        <div id="botoes">
+            <button type="button" id="salvar">Salvar contato</button>
+            <button type="reset">Limpar</button>
+        </div>
+
+    </form>
+
+    <div>
+        <h2>Contatos</h2>
+
+        <table>
+            <thead>
+                <th>Foto</th>
+                <th>Nome</th>
+                <th>Número de telefone</th>
+                <th>Ações</th>
+            </thead>
+            <tbody id="corpo-tabela">
+                <td colspan="4" id="nenhum">Nenhum contato para exibir no momento.</td>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('#salvar').click(function() {
+                let foto = $('#iFoto').val();
+                let nome = $('#iNome').val();
+                let numero = $('#iNumero').val();
+                let tipoNumero = '';
+
+                if(numero[0] == 9) {
+                    tipoNumero = "📱";
+                } else {
+                    tipoNumero = "☎️";
+                }
+
+                $('#nenhum').remove();
+
+                $('#corpo-tabela').append('<tr class="child"><td><img src="'+foto+'" class="foto-contato"></td><td>'+nome+'</td><td>'+numero+tipoNumero+'</td><td><button class="remover">Remover</button></td></tr>');
+
+
+            });
+
+            $('#corpo-tabela').on('click', '.remover', function () {
+                $(this).closest('tr').remove();
+
+                if ($('#corpo-tabela tr').length === 0) {
+                    $('#corpo-tabela').html('<td colspan="4" id="nenhum">Nenhum contato para exibir no momento.</td>');
+                }
+            });
+                
+        });
+    </script>
+</body>
+</html>
